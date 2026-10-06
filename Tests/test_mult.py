@@ -14,19 +14,26 @@ class TestFractionMultiplication(unittest.TestCase):
 
     self.assertEqual(Fraction(3, 2), product)
 
-  def test_does_not_modify_operands(self):
-    fraction = Fraction(2, 3)
-    other = Fraction(9, 10)
+  def test_does_not_modify_left_operand(self):
+    left = Fraction(2, 3)
+    left.__mul__(Fraction(9, 10))
 
-    fraction.__mul__(other)
+    self.assertEqual(Fraction(2, 3), left)
 
-    self.assertEqual(Fraction(2, 3), fraction)
-    self.assertEqual(Fraction(9, 10), other)
+  def test_does_not_modify_right_operand(self):
+    right = Fraction(9, 10)
+    Fraction(2, 3).__mul__(right)
+
+    self.assertEqual(Fraction(9, 10), right)
 
   def test_raises_type_error_for_unsupported_operand(self):
     with self.assertRaises(TypeError):
       Fraction(1, 2).__mul__(0.5)
+      
+  def test_multiplies_negative_fraction(self):
+    product = Fraction(1, 2).__mul__(Fraction(-2, 3))
 
+    self.assertEqual(Fraction(-1, 3), product)
 
 if __name__ == "__main__":
   unittest.main()
